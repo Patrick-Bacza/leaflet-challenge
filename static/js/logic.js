@@ -1,6 +1,7 @@
 // Earthquake URL for all earthquakes in the last 7 days
 let url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
 
+// create base object 
 let myMap = L.map("map", {
   center: [
     37.09, -95.71
@@ -8,7 +9,7 @@ let myMap = L.map("map", {
   zoom: 5
  
 });
-
+// create base map
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(myMap)
@@ -22,7 +23,7 @@ d3.json(url).then(function(data) {
 
   
 
-  // Create makrer color based on depth
+  // Create marker color based on depth
   function markerColor(earthquakes) { 
     if (earthquakes >= -10 && earthquakes < 10){
       return "green"
@@ -39,6 +40,7 @@ d3.json(url).then(function(data) {
     }
 }
 
+// If function to create opactiy based on depth
 function markerOpacity(earthquakes){
         if (earthquakes >= -10 && earthquakes < 10){
           return .40
@@ -55,7 +57,7 @@ function markerOpacity(earthquakes){
         }
 
 }
-
+  // Create circle markers for each earthquake
     L.geoJson(data , {
       pointToLayer: function(feature, latlng){
         console.log(latlng);
@@ -74,7 +76,7 @@ function markerOpacity(earthquakes){
         };
 
       },
-      
+      // Add popup to each marker
       onEachFeature: function(feature , layer) {
       layer.bindPopup(`<h3>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p><hr><p>Magnitude: ${feature.properties.mag}`)
       }
